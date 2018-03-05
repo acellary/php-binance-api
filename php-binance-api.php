@@ -32,10 +32,10 @@ class API {
 		return $this->order("SELL", $symbol, $quantity, $price, $type, $flags);
 	}
 	public function marketBuy($symbol, $quantity) {
-		return $this->order("BUY", $symbol, $quantity, 0, "MARKET", $flags = []);
+		return $this->order("BUY", $symbol, $quantity, 0, "MARKET", $flags = ["newOrderRespType" => "FULL"]);
 	}
 	public function marketSell($symbol, $quantity) {
-		return $this->order("SELL", $symbol, $quantity, 0, "MARKET", $flags = []);
+		return $this->order("SELL", $symbol, $quantity, 0, "MARKET", $flags = ["newOrderRespType" => "FULL"]);
 	}
 	public function cancel($symbol, $orderid) {
 		return $this->signedRequest("v3/order", ["symbol"=>$symbol, "orderId"=>$orderid], "DELETE");
@@ -84,6 +84,11 @@ class API {
 	public function prices() {
 		return $this->priceData($this->request("v3/ticker/price"));
 	}
+    public function price($symbol) {
+        $params = ["symbol" => $symbol];
+        $price = $this->request("v3/ticker/price", $params, "GET");
+        return (float)$price['price'];
+    }
 	public function bookPrices() {
 		return $this->bookPriceData($this->request("v3/ticker/bookTicker"));
 	}
