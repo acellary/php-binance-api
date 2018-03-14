@@ -87,7 +87,11 @@ class API {
     public function price($symbol) {
         $params = ["symbol" => $symbol];
         $price = $this->request("v3/ticker/price", $params, "GET");
-        return (float)$price['price'];
+        if (isset($price['price'])) {
+            return (float)$price['price'];
+        } else {
+            return false;
+        }
     }
 	public function bookPrices() {
 		return $this->bookPriceData($this->request("v3/ticker/bookTicker"));
