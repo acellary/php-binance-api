@@ -108,7 +108,11 @@ class API {
 		return $this->depthData($symbol, $json);
 	}
 	public function balances($priceData = false) {
-		return $this->balanceData($this->signedRequest("v3/account"),$priceData);
+		$account = $this->signedRequest("v3/account");
+	    	if (isset($account['code'])) {
+	        	return false;
+        	}
+		return $this->balanceData($account,$priceData);
 	}
 
 	private function request($url, $params = [], $method = "GET") {
